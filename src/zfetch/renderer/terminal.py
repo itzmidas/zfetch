@@ -69,15 +69,19 @@ def render_fetch(
         for mod_id in config.modules.enabled:
             mod = ModuleRegistry.get(mod_id)
             if mod:
-                res = mod.fetch()
-                if res:
-                    # Apply custom label override if configured
-                    if mod_id in config.modules.custom_labels:
-                        res.label = config.modules.custom_labels[mod_id]
-                    # Apply nerd_fonts toggle
-                    if not config.appearance.nerd_fonts:
-                        res.icon = ""
-                    modules.append(res)
+                try:
+                    res = mod.fetch()
+                    if res:
+                        # Apply custom label override if configured
+                        if mod_id in config.modules.custom_labels:
+                            res.label = config.modules.custom_labels[mod_id]
+                        # Apply nerd_fonts toggle
+                        if not config.appearance.nerd_fonts:
+                            res.icon = ""
+                        modules.append(res)
+                except Exception as e:
+                    # Never crash from a failing module
+                    pass
 
     # 4. Format Info lines
     separator = config.appearance.separator
@@ -98,6 +102,12 @@ def render_fetch(
         info_lines.append(render_color_dots())
 
     # 5. Assemble Output according to Layout Position
+    import shutil
+    term_cols = shutil.get_terminal_size((80, 24)).columns
+    # If terminal is very narrow and side-by-side would wrap, adapt to top layout
+    if ascii_position == "left" and art and (ascii_width + max_label_len + 30 + config.appearance.spacing > term_cols):
+        ascii_position = "top"
+
     spacing = config.appearance.spacing
     padding_left = " " * config.appearance.padding_left
     space_gap = " " * spacing
