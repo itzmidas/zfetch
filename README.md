@@ -56,7 +56,7 @@
 
 ### 1. Clone & Install
 ```bash
-git clone https://github.com/archuser/zfetch.git
+git clone https://github.com/itzmidas/zfetch.git
 cd zfetch
 python3 -m venv ~/.local/share/zfetch/venv
 ~/.local/share/zfetch/venv/bin/pip install .

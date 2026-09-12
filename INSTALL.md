@@ -33,7 +33,7 @@ sudo pacman -S --needed git python pciutils
 
 1. **Клонируйте репозиторий zfetch:**
    ```bash
-   git clone https://github.com/archuser/zfetch.git ~/zfetch
+   git clone https://github.com/itzmidas/zfetch.git ~/zfetch
    cd ~/zfetch
    ```
 
