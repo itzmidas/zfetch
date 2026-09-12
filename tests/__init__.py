@@ -1,1 +1,1 @@
-"""Test package for zfetch."""
+"""Test package for yfetch."""

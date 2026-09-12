@@ -1,8 +1,8 @@
-# ⚡ zfetch
+# ⚡ yfetch
 
-> **A beautiful, modern, and highly customizable Linux system fetch for Arch Linux with an interactive TUI setup.**
+> **A beautiful, modern, and highly customizable Linux system fetch with an interactive TUI setup.**
 
-`zfetch` combines the rich system information of classic tools like Neofetch with a next-generation interactive terminal configurator (`zfetch --setup`). Adjust your themes, ASCII logos, information modules, and layouts in real-time with an instant split-screen Live Preview — without ever touching a configuration file.
+`yfetch` combines rich system information with a next-generation interactive terminal configurator (`yfetch --setup`). Adjust your themes, ASCII logos, information modules, and layouts in real-time with an instant split-screen Live Preview — without ever touching a configuration file.
 
 ```text
        /\            User       ❯ archuser05@acer-aspire-5
@@ -29,18 +29,18 @@
 
 ## ✨ Key Features
 
-- **⚡ Blazingly Fast**: Starts in milliseconds (< 50ms) using fast `/proc` and `/sys` kernel interfaces — perfect for `.bashrc` or `.zshrc`.
-- **🛠️ Interactive TUI Setup (`zfetch --setup`)**: Full keyboard-driven configuration interface with instant Live Preview.
-- **📊 Comprehensive System Data**:
+- **⚡ Fast & Lightweight**: Optimized for fast startup using direct `/proc` and `/sys` interfaces — smooth integration into `.bashrc` or `.zshrc`.
+- **🛠️ Interactive TUI Setup (`yfetch --setup`)**: Full keyboard-driven configuration interface with instant Live Preview.
+- **📊 Comprehensive Multi-Distro System Data**:
   - OS & Architecture, Kernel, Hostname, Uptime, Locale
-  - Pacman & Flatpak package counts
+  - Multi-distribution package detection: Pacman, DPKG/APT, RPM/DNF, APK, XBPS, Portage (Emerge), Nix, Homebrew, Flatpak, and Snap
   - Shell (with version), Terminal emulator, Terminal font
   - Desktop Environment (DE), Window Manager (WM), GTK Theme, Icon Theme
-  - CPU (model, threads, clock frequency), GPU, RAM, Swap, Disk mount usage, Battery state, Display Resolution
+  - CPU (model, threads, clock frequency), GPU (PCI and DRM sysfs fallback), RAM, Swap, Disk mount usage, Battery state, Display Resolution
   - Terminal color dots / palette
 - **🖼️ Built-in & Custom ASCII Art**:
-  - Preloaded with Arch Linux (Standard, Clean, Small, Large), Linux mascot, Tux the Penguin, and zfetch logos.
-  - Drop your own `.txt` ASCII files into `~/.config/zfetch/ascii/` and they are discovered automatically.
+  - Preloaded with logos for Arch Linux (Standard, Clean, Small, Large), Debian, Ubuntu, Fedora, Linux mascot, Tux the Penguin, and yfetch.
+  - Drop your own `.txt` ASCII files into `~/.config/yfetch/ascii/` and they are discovered automatically.
 - **🌈 Smooth TrueColor Gradients & Themes**:
   - Built-in palettes: **Arch Cyan (Default)**, **Nord**, **Dracula**, **Gruvbox**, **Tokyo Night**, **Catppuccin (Mocha)**, **Cyberpunk**, and **Monochrome**.
   - Multi-stop TrueColor gradient interpolation for ASCII art.
@@ -56,43 +56,43 @@
 
 ### 1. Clone & Install
 ```bash
-git clone https://github.com/itzmidas/zfetch.git
-cd zfetch
-python3 -m venv ~/.local/share/zfetch/venv
-~/.local/share/zfetch/venv/bin/pip install .
+git clone https://github.com/itzmidas/yfetch.git
+cd yfetch
+python3 -m venv ~/.local/share/yfetch/venv
+~/.local/share/yfetch/venv/bin/pip install .
 mkdir -p ~/.local/bin
-ln -sf ~/.local/share/zfetch/venv/bin/zfetch ~/.local/bin/zfetch
+ln -sf ~/.local/share/yfetch/venv/bin/yfetch ~/.local/bin/yfetch
 ```
 *(Make sure `~/.local/bin` is in your `$PATH`! See [INSTALL.md](INSTALL.md) for full instructions).*
 
 ### 2. Run
 ```bash
 # Standard instant fetch
-zfetch
+yfetch
 
 # Interactive visual setup with live preview
-zfetch --setup
+yfetch --setup
 
 # Display fetch with random themes and artwork
-zfetch --random
+yfetch --random
 
 # Preview current active configuration
-zfetch --preview
+yfetch --preview
 ```
 
 ---
 
-## 🖥️ Interactive Setup (`zfetch --setup`)
+## 🖥️ Interactive Setup (`yfetch --setup`)
 
 Launch the visual configurator:
 
 ```bash
-zfetch --setup
+yfetch --setup
 ```
 
 ```text
 ╭──────────────────────────────────────────────╮
-│                  zfetch                      │
+│                  yfetch                      │
 │          Setup & Customization               │
 ├──────────────────────────────────────────────┤
 │  ❯ 🖼️  ASCII Art                             │
@@ -116,7 +116,7 @@ zfetch --setup
 - **`Enter`**: Select menu option or enter submenu.
 - **`Space`**: Toggle checkboxes (e.g. enable/disable information modules).
 - **`Esc`**: Return to previous menu or open save dialog from main screen.
-- **`s`**: Quick Save changes to `~/.config/zfetch/config.toml` and exit.
+- **`s`**: Quick Save changes to `~/.config/yfetch/config.toml` and exit.
 
 ---
 
@@ -124,14 +124,14 @@ zfetch --setup
 
 | Command | Description |
 | :--- | :--- |
-| `zfetch` | Run standard system fetch using saved configuration |
-| `zfetch --setup` | Open interactive TUI configurator with live preview |
-| `zfetch --preview` | Render output with active configuration |
-| `zfetch --random` | Display fetch with randomly selected artwork and theme |
-| `zfetch --config <PATH>` | Load specific alternative `config.toml` file |
-| `zfetch --debug` | Enable verbose debugging log in `~/.config/zfetch/debug.log` |
-| `zfetch --version` | Display version information |
-| `zfetch --help` | Display command-line options |
+| `yfetch` | Run standard system fetch using saved configuration |
+| `yfetch --setup` | Open interactive TUI configurator with live preview |
+| `yfetch --preview` | Render output with active configuration |
+| `yfetch --random` | Display fetch with randomly selected artwork and theme |
+| `yfetch --config <PATH>` | Load specific alternative `config.toml` file |
+| `yfetch --debug` | Enable verbose debugging log in `~/.config/yfetch/debug.log` |
+| `yfetch --version` | Display version information |
+| `yfetch --help` | Display command-line options |
 
 ---
 
@@ -139,20 +139,20 @@ zfetch --setup
 
 Configuration is saved in:
 ```text
-~/.config/zfetch/config.toml
+~/.config/yfetch/config.toml
 ```
 
 To add custom ASCII artwork, simply place any plain text file (`.txt`) in:
 ```text
-~/.config/zfetch/ascii/mylogo.txt
+~/.config/yfetch/ascii/mylogo.txt
 ```
-It will immediately appear in `zfetch --setup` under **ASCII Art**!
+It will immediately appear in `yfetch --setup` under **ASCII Art**!
 
 ---
 
 ## 📖 Installation Guide
 
-For step-by-step instructions for Linux beginners, troubleshooting, Nerd Font setup, and uninstallation, check out the comprehensive **[INSTALL.md](INSTALL.md)** guide.
+For step-by-step instructions for Linux beginners, multi-distro setup, troubleshooting, Nerd Font setup, and uninstallation, check out the comprehensive **[INSTALL.md](INSTALL.md)** guide.
 
 ---
 

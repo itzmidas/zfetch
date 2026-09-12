@@ -1,8 +1,8 @@
 """Unit tests for themes, color conversions, and quick styles."""
 
-from zfetch.config.schema import Config
-from zfetch.themes.definitions import THEMES, color_to_ansi, get_theme, list_themes
-from zfetch.themes.quick_styles import QUICK_STYLES, apply_quick_style_by_name
+from yfetch.config.schema import Config
+from yfetch.themes.definitions import THEMES, color_to_ansi, get_theme, list_themes
+from yfetch.themes.quick_styles import QUICK_STYLES, apply_quick_style_by_name
 
 
 def test_theme_retrieval():
@@ -31,7 +31,7 @@ def test_quick_styles_presets():
     cfg = Config()
     assert apply_quick_style_by_name(cfg, "cyberpunk") is True
     assert cfg.colors.theme == "cyberpunk"
-    assert cfg.ascii.art == "zfetch"
+    assert cfg.ascii.art == "yfetch"
     assert cfg.appearance.separator == "⚡"
 
     # Test minimal style

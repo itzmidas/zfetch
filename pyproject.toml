@@ -3,14 +3,14 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "zfetch"
+name = "yfetch"
 version = "0.1.0"
 description = "A beautiful, modern, and highly customizable Linux system fetch with interactive TUI setup"
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }
 authors = [
-    { name = "Arch User", email = "archuser05@archlinux.local" }
+    { name = "itzmidas", email = "itzmidas@users.noreply.github.com" }
 ]
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -41,7 +41,7 @@ test = [
 ]
 
 [project.scripts]
-zfetch = "zfetch.cli:main"
+yfetch = "yfetch.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

@@ -1,9 +1,9 @@
-"""Tests for zfetch configuration system."""
+"""Tests for yfetch configuration system."""
 
 from pathlib import Path
 import pytest
 
-from zfetch.config import Config, ConfigManager
+from yfetch.config import Config, ConfigManager
 
 
 def test_default_config():

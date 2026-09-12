@@ -4,11 +4,11 @@ import os
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-from zfetch.ascii.manager import AsciiManager
-from zfetch.config import Config, ConfigManager
-from zfetch.modules.base import BaseModule, ModuleRegistry, ModuleResult
-from zfetch.renderer.terminal import render_fetch
-from zfetch.utils.logger import setup_logger
+from yfetch.ascii.manager import AsciiManager
+from yfetch.config import Config, ConfigManager
+from yfetch.modules.base import BaseModule, ModuleRegistry, ModuleResult
+from yfetch.renderer.terminal import render_fetch
+from yfetch.utils.logger import setup_logger
 
 
 def test_corrupted_custom_ascii_unreadable(tmp_path):

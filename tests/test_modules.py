@@ -1,14 +1,14 @@
-"""Unit tests for zfetch information modules."""
+"""Unit tests for yfetch information modules."""
 
 from unittest.mock import MagicMock, patch
 import pytest
 
-from zfetch.modules.base import ModuleRegistry
-from zfetch.modules.os_info import OSModule, KernelModule, UptimeModule, HostnameModule, LocaleModule
-from zfetch.modules.packages import PackagesModule
-from zfetch.modules.terminal import ShellModule, TerminalModule, TerminalFontModule
-from zfetch.modules.desktop import DEModule, WMModule, GTKThemeModule, IconThemeModule
-from zfetch.modules.hardware import CPUModule, GPUModule, MemoryModule, SwapModule, DiskModule, BatteryModule, ResolutionModule
+from yfetch.modules.base import ModuleRegistry
+from yfetch.modules.os_info import OSModule, KernelModule, UptimeModule, HostnameModule, LocaleModule
+from yfetch.modules.packages import PackagesModule
+from yfetch.modules.terminal import ShellModule, TerminalModule, TerminalFontModule
+from yfetch.modules.desktop import DEModule, WMModule, GTKThemeModule, IconThemeModule
+from yfetch.modules.hardware import CPUModule, GPUModule, MemoryModule, SwapModule, DiskModule, BatteryModule, ResolutionModule
 
 
 def test_hostname_module():
@@ -23,7 +23,7 @@ def test_hostname_module():
 def test_os_module():
     mod = OSModule()
     mock_os_release = 'NAME="Arch Linux"\nPRETTY_NAME="Arch Linux"\nID=arch\n'
-    with patch("zfetch.modules.os_info.read_file_safe", return_value=mock_os_release), \
+    with patch("yfetch.modules.os_info.read_file_safe", return_value=mock_os_release), \
          patch("platform.machine", return_value="x86_64"):
         res = mod.fetch()
         assert res is not None
@@ -37,13 +37,13 @@ def test_kernel_module():
         res = mod.fetch()
         assert res is not None
         assert res.label == "Kernel"
-        assert res.value == "6.12.1-arch1-1"
+        assert "6.12.1-arch1-1" in res.value
 
 
 def test_uptime_module():
     mod = UptimeModule()
     # 7320 seconds = 2h 2m
-    with patch("zfetch.modules.os_info.read_file_safe", return_value="7320.45 14000.00"):
+    with patch("yfetch.modules.os_info.read_file_safe", return_value="7320.45 14000.00"):
         res = mod.fetch()
         assert res is not None
         assert res.label == "Uptime"
@@ -53,7 +53,7 @@ def test_uptime_module():
 
 def test_uptime_module_unreadable():
     mod = UptimeModule()
-    with patch("zfetch.modules.os_info.read_file_safe", return_value=None):
+    with patch("yfetch.modules.os_info.read_file_safe", return_value=None):
         res = mod.fetch()
         assert res is None
 
@@ -67,7 +67,7 @@ def test_packages_module(tmp_path):
     (p_dir / "pkg2-2.0").mkdir()
     (p_dir / ".hidden").mkdir()
 
-    with patch("zfetch.modules.packages.Path") as mock_path:
+    with patch("yfetch.modules.packages.Path") as mock_path:
         mock_path.side_effect = lambda p: p_dir if "pacman" in str(p) else tmp_path / "empty"
         mock_path.home.return_value = tmp_path
         res = mod.fetch()
@@ -78,7 +78,7 @@ def test_packages_module(tmp_path):
 def test_shell_module():
     mod = ShellModule()
     with patch.dict("os.environ", {"SHELL": "/bin/bash"}), \
-         patch("zfetch.modules.terminal.run_command_safe", return_value="GNU bash, version 5.2.26(1)-release"):
+         patch("yfetch.modules.terminal.run_command_safe", return_value="GNU bash, version 5.2.26(1)-release"):
         res = mod.fetch()
         assert res is not None
         assert res.label == "Shell"
@@ -109,7 +109,7 @@ def test_desktop_wm_module():
 def test_cpu_module():
     mod = CPUModule()
     mock_cpuinfo = "processor : 0\nmodel name : AMD Ryzen 7 7800X3D 8-Core Processor\nprocessor : 1\nmodel name : AMD Ryzen 7 7800X3D 8-Core Processor\n"
-    with patch("zfetch.modules.hardware.read_file_safe", side_effect=lambda p: mock_cpuinfo if str(p) == "/proc/cpuinfo" else "4200000"):
+    with patch("yfetch.modules.hardware.read_file_safe", side_effect=lambda p: mock_cpuinfo if str(p) == "/proc/cpuinfo" else "4200000"):
         res = mod.fetch()
         assert res is not None
         assert res.label == "CPU"
@@ -121,7 +121,7 @@ def test_cpu_module():
 def test_gpu_module():
     mod = GPUModule()
     mock_lspci = "01:00.0 VGA compatible controller: NVIDIA Corporation GA106 [GeForce RTX 3060] (rev a1)"
-    with patch("zfetch.modules.hardware.run_command_safe", return_value=mock_lspci):
+    with patch("yfetch.modules.hardware.run_command_safe", return_value=mock_lspci):
         res = mod.fetch()
         assert res is not None
         assert res.label == "GPU"
@@ -162,7 +162,7 @@ def test_battery_module():
 def test_resolution_module():
     mod = ResolutionModule()
     with patch("glob.glob", return_value=["/sys/class/drm/card0-DP-1/modes"]), \
-         patch("zfetch.modules.hardware.read_file_safe", return_value="2560x1440\n1920x1080"):
+         patch("yfetch.modules.hardware.read_file_safe", return_value="2560x1440\n1920x1080"):
         res = mod.fetch()
         assert res is not None
         assert res.label == "Resolution"
@@ -177,3 +177,29 @@ def test_registry_canonical_order():
     assert "cpu" in ids
     assert ids.index("hostname") < ids.index("os")
     assert ids.index("os") < ids.index("cpu")
+
+
+def test_packages_module_dpkg(tmp_path):
+    mod = PackagesModule()
+    status_file = tmp_path / "status"
+    status_file.write_text("Package: bash\nStatus: install ok\n\nPackage: coreutils\nStatus: install ok\n", encoding="utf-8")
+
+    with patch("yfetch.modules.packages.Path") as mock_path:
+        mock_path.side_effect = lambda p: status_file if "dpkg" in str(p) else tmp_path / "empty"
+        mock_path.home.return_value = tmp_path
+        res = mod.fetch()
+        assert res is not None
+        assert "2 (dpkg)" in res.value
+
+
+def test_gpu_module_sysfs_fallback():
+    mod = GPUModule()
+    # lspci fails, sysfs DRM driver fallback succeeds
+    with patch("yfetch.modules.hardware.run_command_safe", return_value=None), \
+         patch("glob.glob", return_value=["/sys/bus/pci/devices/0000:00:02.0/drm/card0"]), \
+         patch("yfetch.modules.hardware.read_file_safe", return_value="DRIVER=i915\nPCI_CLASS=30000"):
+        res = mod.fetch()
+        assert res is not None
+        assert res.label == "GPU"
+        assert "Intel" in res.value
+

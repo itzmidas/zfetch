@@ -3,14 +3,14 @@
 import asyncio
 from textual.widgets import ListView
 
-from zfetch.config import Config, ConfigManager
-from zfetch.tui.app import ZFetchApp
-from zfetch.tui.widgets import LivePreviewWidget, MenuItem
+from yfetch.config import Config, ConfigManager
+from yfetch.tui.app import YFetchApp
+from yfetch.tui.widgets import LivePreviewWidget, MenuItem
 
 
 def test_tui_initialization():
     async def _test():
-        app = ZFetchApp()
+        app = YFetchApp()
         async with app.run_test() as pilot:
             assert app.current_view == "main"
             list_view = app.query_one("#menu-list", ListView)
@@ -25,7 +25,7 @@ def test_tui_initialization():
 
 def test_tui_module_toggle_with_space():
     async def _test():
-        app = ZFetchApp()
+        app = YFetchApp()
         async with app.run_test() as pilot:
             app.show_modules_menu()
             assert app.current_view == "modules"
@@ -56,7 +56,7 @@ def test_tui_module_toggle_with_space():
 def test_tui_appearance_and_styles(tmp_path):
     async def _test():
         conf_path = tmp_path / "tui_test_config.toml"
-        app = ZFetchApp(config_path=conf_path)
+        app = YFetchApp(config_path=conf_path)
         async with app.run_test() as pilot:
             # Switch to styles menu
             app.show_styles_menu()

@@ -3,9 +3,9 @@
 from unittest.mock import patch
 import pytest
 
-from zfetch import __version__
-from zfetch.cli import build_parser, main
-from zfetch.config import Config, ConfigManager
+from yfetch import __version__
+from yfetch.cli import build_parser, main
+from yfetch.config import Config, ConfigManager
 
 
 def test_cli_parser_defaults():
@@ -34,7 +34,7 @@ def test_cli_version(capsys):
         parser.parse_args(["--version"])
     assert exc.value.code == 0
     captured = capsys.readouterr()
-    assert f"zfetch {__version__}" in captured.out
+    assert f"yfetch {__version__}" in captured.out
 
 
 def test_cli_main_default(capsys):
@@ -76,7 +76,7 @@ def test_cli_main_custom_config(tmp_path, capsys):
 
 
 def test_cli_main_setup_mocked():
-    with patch("zfetch.tui.app.run_tui", return_value=0) as mock_tui:
+    with patch("yfetch.tui.app.run_tui", return_value=0) as mock_tui:
         ret = main(["--setup"])
         assert ret == 0
         mock_tui.assert_called_once()

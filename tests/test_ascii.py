@@ -3,14 +3,14 @@
 from pathlib import Path
 from unittest.mock import patch
 
-from zfetch.ascii.builtin import BUILTIN_ARTS, get_builtin_ascii, list_builtin_arts
-from zfetch.ascii.gradient import (
+from yfetch.ascii.builtin import BUILTIN_ARTS, get_builtin_ascii, list_builtin_arts
+from yfetch.ascii.gradient import (
     apply_gradient_to_lines,
     generate_gradient_palette,
     hex_to_rgb,
     interpolate_rgb,
 )
-from zfetch.ascii.manager import AsciiManager
+from yfetch.ascii.manager import AsciiManager
 
 
 def test_builtin_ascii():
@@ -22,6 +22,9 @@ def test_builtin_ascii():
     tux = get_builtin_ascii("tux")
     assert tux is not None
     assert "tux" in tux.name.lower()
+
+    yfetch = get_builtin_ascii("yfetch")
+    assert yfetch is not None
 
     zfetch = get_builtin_ascii("zfetch")
     assert zfetch is not None
