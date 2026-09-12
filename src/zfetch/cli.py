@@ -80,6 +80,22 @@ def main(argv: list[str] | None = None) -> int:
             sys.stderr.write(f"Error launching TUI setup: {e}\nPlease ensure textual is installed.\n")
             return 1
 
+    if args.random:
+        import random
+        from zfetch.ascii.manager import AsciiManager
+        from zfetch.themes.definitions import THEMES
+        from zfetch.themes.quick_styles import QUICK_STYLES
+
+        all_arts = AsciiManager().list_all()
+        if all_arts:
+            config.ascii.art = random.choice(all_arts).key
+        config.colors.theme = random.choice(list(THEMES.keys()))
+        config.ascii.color_mode = random.choice(["gradient", "theme", "single"])
+
+        # Render random fetch
+        print(render_fetch(config=config))
+        return 0
+
     # Normal fetch and preview
     print(render_fetch(config=config))
     return 0
