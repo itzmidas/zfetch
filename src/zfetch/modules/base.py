@@ -38,6 +38,31 @@ class BaseModule(ABC):
         pass
 
 
+CANONICAL_MODULE_ORDER = [
+    "hostname",
+    "os",
+    "kernel",
+    "uptime",
+    "packages",
+    "shell",
+    "resolution",
+    "de",
+    "wm",
+    "wm_theme",
+    "gtk_theme",
+    "icon_theme",
+    "terminal",
+    "terminal_font",
+    "cpu",
+    "gpu",
+    "memory",
+    "swap",
+    "disk",
+    "battery",
+    "locale",
+]
+
+
 class ModuleRegistry:
     """Registry that manages all available and active information modules."""
 
@@ -63,11 +88,19 @@ class ModuleRegistry:
 
     @classmethod
     def get_all(cls) -> list[BaseModule]:
-        """Return instances of all registered modules in order of registration."""
+        """Return instances of all registered modules in canonical order."""
+        # Ensure all registered classes are instantiated
         for mod_id, mod_cls in cls._modules.items():
             if mod_id not in cls._instances:
                 cls._instances[mod_id] = mod_cls()
-        return list(cls._instances.values())
+
+        def _sort_key(m: BaseModule) -> int:
+            try:
+                return CANONICAL_MODULE_ORDER.index(m.id)
+            except ValueError:
+                return 999
+
+        return sorted(cls._instances.values(), key=_sort_key)
 
     @classmethod
     def get_module_ids(cls) -> list[str]:

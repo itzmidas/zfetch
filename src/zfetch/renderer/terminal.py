@@ -78,16 +78,18 @@ def render_fetch(
     space_gap = " " * spacing
 
     for i in range(total_lines):
-        left = ascii_lines[i] if i < len(ascii_lines) else " " * ascii_width
-        # Ensure left padding matches ascii_width even if line is shorter
-        raw_left_len = len(art.lines[i]) if (art and i < len(art.lines)) else 0
-        fill_spaces = " " * max(0, ascii_width - raw_left_len)
+        if i < len(ascii_lines):
+            raw_left_len = len(art.lines[i]) if art else 0
+            fill_spaces = " " * max(0, ascii_width - raw_left_len)
+            left_col = f"{ascii_lines[i]}{fill_spaces}"
+        else:
+            left_col = " " * ascii_width
 
         right = info_lines[i] if i < len(info_lines) else ""
 
         if right:
-            output_lines.append(f"{left}{fill_spaces}{space_gap}{right}")
+            output_lines.append(f"{left_col}{space_gap}{right}")
         else:
-            output_lines.append(f"{left}{fill_spaces}")
+            output_lines.append(left_col)
 
     return "\n" + "\n".join(output_lines) + "\n"
