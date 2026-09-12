@@ -66,6 +66,11 @@ def main(argv: list[str] | None = None) -> int:
     if args.debug:
         setup_logger(debug_mode=True)
 
+    from zfetch.config import ConfigManager
+
+    cfg_mgr = ConfigManager(config_path=args.config)
+    config = cfg_mgr.load()
+
     if args.setup:
         try:
             # We lazy import textual TUI here so normal runs stay instant
@@ -75,8 +80,8 @@ def main(argv: list[str] | None = None) -> int:
             sys.stderr.write(f"Error launching TUI setup: {e}\nPlease ensure textual is installed.\n")
             return 1
 
-    # In Phase 1, both default and preview render the core output
-    print(render_fetch())
+    # Normal fetch and preview
+    print(render_fetch(config=config))
     return 0
 
 
